@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrlShortener.API", "UrlShortener.API\UrlShortener.API.csproj", "{C37EFB50-BAE6-4A88-AC6E-C5B1EC9CB256}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.API", "UrlShortener.API\UrlShortener.API.csproj", "{C37EFB50-BAE6-4A88-AC6E-C5B1EC9CB256}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F6169F98-C856-43B4-9C94-F3B38BC0E4AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{C37EFB50-BAE6-4A88-AC6E-C5B1EC9CB256}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C37EFB50-BAE6-4A88-AC6E-C5B1EC9CB256}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C37EFB50-BAE6-4A88-AC6E-C5B1EC9CB256}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6169F98-C856-43B4-9C94-F3B38BC0E4AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6169F98-C856-43B4-9C94-F3B38BC0E4AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6169F98-C856-43B4-9C94-F3B38BC0E4AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6169F98-C856-43B4-9C94-F3B38BC0E4AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

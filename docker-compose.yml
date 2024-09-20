@@ -1,0 +1,25 @@
+services:
+  urlshortener.api:
+    image: ${DOCKER_REGISTRY-}urlshortenerapi
+    build:
+      context: UrlShortener.API
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - mongo
+  
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports: 
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
+    driver: local  

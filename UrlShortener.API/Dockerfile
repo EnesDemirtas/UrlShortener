@@ -7,17 +7,15 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-# Define a volume for persistent data
-VOLUME ["/app/data"]
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["UrlShortener.API/UrlShortener.API.csproj", "UrlShortener.API/"]
-RUN dotnet restore "./UrlShortener.API/UrlShortener.API.csproj"
+COPY ["UrlShortener.API.csproj", "."]
+RUN dotnet restore "./UrlShortener.API.csproj"
 COPY . .
-WORKDIR "/src/UrlShortener.API"
+WORKDIR "/src/."
 RUN dotnet build "./UrlShortener.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
