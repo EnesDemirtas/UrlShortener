@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using UrlShortener.API.Helpers;
 
 namespace UrlShortener.API.Data;
 
@@ -18,7 +19,7 @@ public class MongoDbService : IUrlDb
         _collection.Indexes.CreateOne(new CreateIndexModel<BsonDocument>(indexKeys, indexOptions));
     }
 
-    public async Task InsertShortUrlAsync(string shortUrl, string originalUrl)
+    public async Task<string> InsertShortUrlAsync(string shortUrl, string originalUrl)
     {
         var urlRecord = new BsonDocument 
         {
@@ -28,14 +29,23 @@ public class MongoDbService : IUrlDb
             { "CreatedAt", DateTime.UtcNow },
         };
 
-        try
+        for (int attempt = 1; ; attempt++)
         {
-            await _collection.InsertOneAsync(urlRecord);
+            try
+            {
+                await _collection.InsertOneAsync(urlRecord);
+                break;
+            }
+            catch (MongoWriteException ex) when (ex.WriteError?.Category == ServerErrorCategory.DuplicateKey)
+            {
+                // If DuplicateKey exception is thrown, generate the short url
+                // again but skip 'attempt' number of characters from beginning
+                shortUrl = UrlGenerator.Generate(originalUrl, attempt); // attempt => skip
+                urlRecord["ShortUrl"] = shortUrl;
+            }
         }
-        catch (MongoWriteException ex) when (ex.WriteError?.Category == ServerErrorCategory.DuplicateKey)
-        {
-            throw new Exception("A url record with this ShortUrl already exists.");
-        }
+
+        return shortUrl;
     }
 
     public async Task<string> GetOriginalUrlAsync(string shortUrl)

@@ -1,4 +1,6 @@
+using Amazon.Runtime.Internal.Util;
 using UrlShortener.API.Data;
+using UrlShortener.API.Helpers;
 using UrlShortener.API.Models.DTO;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,10 +18,9 @@ var app = builder.Build();
 // Endpoints
 app.MapPost("/shorten", async (IUrlDb _db, UrlShortenRequest request) =>
 {
-    // TODO: Generate short url
-    var shortUrl = "www.example.com";
-    await _db.InsertShortUrlAsync(shortUrl, request.OriginalUrl);
-    return Results.Ok(new { shortUrl });
+    var shortUrl = UrlGenerator.Generate(request.OriginalUrl);
+    var result = await _db.InsertShortUrlAsync(shortUrl, request.OriginalUrl);
+    return Results.Ok(new { result });
 });
 
 app.MapGet("/{shortUrl}", async (IUrlDb _db, string shortUrl) =>
@@ -28,7 +29,7 @@ app.MapGet("/{shortUrl}", async (IUrlDb _db, string shortUrl) =>
     if (string.IsNullOrEmpty(originalUrl))
         return Results.NotFound();
     
-    return Results.Ok(originalUrl);
+    return Results.Redirect(originalUrl);
 });
 
 // Configure the HTTP request pipeline.
@@ -39,5 +40,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors();
 
 app.Run();
