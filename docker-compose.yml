@@ -8,7 +8,8 @@ services:
       - "8080:80"
     depends_on:
       - mongo
-  
+      - rabbitmq
+
   mongo:
     image: mongo:latest
     container_name: mongodb
@@ -20,6 +21,20 @@ services:
     volumes:
       - mongo_data:/data/db
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672" # Management
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
 volumes:
   mongo_data:
+    driver: local
+  rabbitmq_data:
     driver: local  
