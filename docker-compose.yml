@@ -26,7 +26,7 @@ services:
     container_name: rabbitmq
     ports:
       - "5672:5672"
-      - "15672:15672" # Management
+      - "15672:15672"
     environment:
       RABBITMQ_DEFAULT_USER: user
       RABBITMQ_DEFAULT_PASS: password
@@ -37,4 +37,4 @@ volumes:
   mongo_data:
     driver: local
   rabbitmq_data:
-    driver: local  
+    driver: local

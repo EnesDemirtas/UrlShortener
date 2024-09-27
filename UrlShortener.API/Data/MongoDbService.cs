@@ -21,7 +21,7 @@ public class MongoDbService : IUrlDb
 
     public async Task<string> InsertShortUrlAsync(string shortUrl, string originalUrl)
     {
-        var urlRecord = new BsonDocument 
+        var urlRecord = new BsonDocument
         {
             { "ShortUrl", shortUrl },
             { "OriginalUrl", originalUrl },
@@ -55,5 +55,12 @@ public class MongoDbService : IUrlDb
         if (urlRecord != null)
             return urlRecord["OriginalUrl"].AsString;
         return string.Empty;
+    }
+
+    public async Task IncrementAccessCountAsync(string shortUrl)
+    {
+        var filter = Builders<BsonDocument>.Filter.Eq("ShortUrl", shortUrl);
+        var update = Builders<BsonDocument>.Update.Inc("AccessCount", 1);
+        await _collection.UpdateOneAsync(filter, update);
     }
 }
